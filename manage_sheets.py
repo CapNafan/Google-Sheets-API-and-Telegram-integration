@@ -22,9 +22,9 @@ def get_data_from_sheets():
 
     rows = service.spreadsheets().values().get(
         spreadsheetId=spreadsheet_id,
-        range='A1:D51',
+        range='A:D',
         majorDimension='ROWS'
-    ).execute()
-    rows = rows['values']
-    return rows
+    ).execute()['values'][1:]
 
+    rows = [list(map(int, row[:3])) + [row[3]] for row in rows]
+    return rows
