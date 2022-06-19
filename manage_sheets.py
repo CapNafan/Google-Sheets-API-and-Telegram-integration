@@ -26,5 +26,9 @@ def get_data_from_sheets():
         majorDimension='ROWS'
     ).execute()['values'][1:]
 
+    for row in rows:    # if dollar cell is empty it's set to 0
+        if row[2] == '':
+            row[2] = 0
+
     rows = [list(map(int, row[:3])) + [row[3]] for row in rows]
     return rows

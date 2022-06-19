@@ -78,7 +78,7 @@ def main():
 
                     difference = from_sheets - from_db
 
-                    # updating DB with changed rows
+                    # updating DB with edited rows
                     for element in difference:
                         cursor.execute(update_query, (*element[:3], element[2]*usd_rate, element[3], element[0]))
 
