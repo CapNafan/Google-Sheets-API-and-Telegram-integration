@@ -1,7 +1,7 @@
 import psycopg2
 import time
 from datetime import datetime
-from config import host, user, password
+from config import host, user, password, db_name
 from manage_sheets import get_data_from_sheets
 from dollar_rate import get_dollar_rate
 
@@ -21,7 +21,6 @@ def main():
         for row in table:
             row.insert(3, row[2] * usd_rate)  # inserted cost in rubles
             row[4] = datetime.strptime(row[4], '%d.%m.%Y').date()
-        print(table)
 
         table_ids = set([i[0] for i in table])  # created set for faster membership tests
         try:
@@ -29,6 +28,7 @@ def main():
                 host=host,
                 user=user,
                 password=password,
+                dbname=db_name
             )
             connection.autocommit = True
 
@@ -65,7 +65,6 @@ def main():
 
                     # searching ids to add to DB
                     table_dict = {row[0]: row[1:] for row in table}
-                    print(table_dict)
                     for _id in table_ids:
                         if _id not in database_ids:
                             cursor.execute(insert_query, (_id, *table_dict[_id],))
@@ -84,8 +83,8 @@ def main():
 
             time.sleep(3)   # sleep for 3 sec to avoid exceeding 'Read requests per minute per user'
 
-        except Exception as exc:
-            print('[ERROR]', exc)
+        # except Exception as exc:
+        #     print('[ERROR]', exc)
 
         finally:
             if connection:
