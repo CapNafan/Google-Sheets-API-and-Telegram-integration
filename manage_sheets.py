@@ -20,15 +20,15 @@ service = discovery.build('sheets', 'v4', http=http_auth)  # Construct a Resourc
 
 def get_data_from_sheets():
 
-    rows = service.spreadsheets().values().get(
+    values = service.spreadsheets().values().get(
         spreadsheetId=spreadsheet_id,
         range='A:D',
         majorDimension='ROWS'
     ).execute()['values'][1:]
 
-    for row in rows:    # if dollar cell is empty it's set to 0
-        if row[2] == '':
-            row[2] = 0
+    rows = list()     # if value is deleted from spreadsheet then corresponding row is excluded from the final list
+    for row in values:
+        if row and '' not in row and len(row) == 4:
+            rows.append(list(map(int, row[:3])) + [row[3]])
 
-    rows = [list(map(int, row[:3])) + [row[3]] for row in rows]
     return rows
