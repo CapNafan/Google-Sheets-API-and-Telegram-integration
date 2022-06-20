@@ -9,3 +9,5 @@ If your machine runs on Linux or MacOs, activate virtual environment using **sou
 Install requirements using **pip install -r requirements.txt**
 
 run script **manage_database.py**
+
+Link to the Google sheets: https://docs.google.com/spreadsheets/d/1ApmXsn_QfVVIozsHrLNEozPuYzefp9bnH4ife1BINms/edit#gid=0
