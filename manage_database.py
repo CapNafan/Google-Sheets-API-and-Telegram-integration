@@ -61,14 +61,14 @@ def main():
                     for _id in database_ids:
                         if _id not in table_ids:
                             cursor.execute(delete_query, (_id, ))
-                            print('deleted', _id)
+                            print('[INFO] deletion of', _id)
 
                     # searching ids to add to DB
                     table_dict = {row[0]: row[1:] for row in table}
                     for _id in table_ids:
                         if _id not in database_ids:
                             cursor.execute(insert_query, (_id, *table_dict[_id],))
-                            print('inserted', _id)
+                            print('[INFO] insertion of', _id)
 
                     # creating and comparing sets of data from DB and from Google sheets
                     cursor.execute('SELECT id, order_num, cost_usd, delivery_date FROM orders;')
@@ -83,8 +83,8 @@ def main():
 
             time.sleep(3)   # sleep for 3 sec to avoid exceeding 'Read requests per minute per user'
 
-        # except Exception as exc:
-        #     print('[ERROR]', exc)
+        except Exception as exc:
+            print('[ERROR]', exc)
 
         finally:
             if connection:
