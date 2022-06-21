@@ -4,6 +4,7 @@ from datetime import datetime
 from config import host, user, password, db_name
 from manage_sheets import get_data_from_sheets
 from dollar_rate import get_dollar_rate
+from tg_notifier import send_message
 
 insert_query = '''INSERT INTO orders(id, order_num, cost_usd, cost_rub, delivery_date) Values(%s,%s,%s,%s,%s);'''
 delete_query = 'DELETE FROM orders WHERE id = %s'
@@ -15,6 +16,7 @@ exists_query = 'select exists(SELECT * FROM information_schema.tables WHERE tabl
 
 
 def main():
+    cached_overdue_orders = set()
     while True:
         usd_rate = get_dollar_rate()  # current USD rate from http://www.cbr.ru/scripts/XML_daily.asp
 
@@ -22,6 +24,11 @@ def main():
         for row in table:
             row.insert(3, row[2] * usd_rate)  # inserted cost in rubles
             row[4] = datetime.strptime(row[4], '%d.%m.%Y').date()
+
+            order_num = row[1]
+            delivery_date = row[4]
+
+            check_delivery_date(delivery_date, order_num, cached_overdue_orders)
 
         table_ids = set([i[0] for i in table])  # created set for faster membership tests
         try:
@@ -85,6 +92,14 @@ def main():
         finally:
             if connection:
                 connection.close()
+
+
+def check_delivery_date(date, order_number, cache):
+    if date < datetime.today().date():
+        overdue_order = order_number
+        if overdue_order not in cache:
+            send_message(f'overdue order {overdue_order}')
+            cache.add(overdue_order)
 
 
 if __name__ == '__main__':
