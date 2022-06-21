@@ -4,8 +4,8 @@ It will create a new bot and give you its Token
 
 After that, you need to create **tg_config.py**.
 In **tg_config.py** create two variables:
-  * **TGBOT_TOKEN**, which is your bot's Token as string
-  * **CHAT_ID**, which is an id of a chat or a person you want to send message to
+  * **TGBOT_TOKEN**, string which is your bot's Token
+  * **CHAT_ID**, string which is an id of a chat or a person you want to send message to
 
 In order to program to work you need PostgreSQL installed on your computer
 
