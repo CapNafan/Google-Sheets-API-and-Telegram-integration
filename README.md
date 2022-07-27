@@ -2,7 +2,7 @@
 Firstly, you need to create telegram bot. command **/newbot** to @BotFather in Telegram.
 It will create a new bot and give you its Token
 
-Then create Google service account and generate json-key file. Call it credentials.json
+Then create Google service account,generate json-key file. Call it **credentials.json** and place it to the working directory
 
 After that, you need to create **tg_config.py**.
 In **tg_config.py** create two variables:
