@@ -1,4 +1,4 @@
-# Numbers_techtest
+# Google-Sheets-API-and-Telegram-integration
 Firstly, you need to create telegram bot. command **/newbot** to @BotFather in Telegram.
 It will create a new bot and give you its Token
 
